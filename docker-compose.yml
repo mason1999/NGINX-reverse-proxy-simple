@@ -1,0 +1,10 @@
+version: '3'
+services:
+  redis-server:
+    image: 'redis'
+  node-app:
+    build: 
+      context: ./backend
+    ports:
+      - "8080:8080"     
+    container_name: api-server  
