@@ -24,6 +24,7 @@ const pool = new pg.Pool({
 });
 
 await client.set("inventorycount", 0);
+
 server.get("/api/get", async (req, res) => {
   const count = await client.get("inventorycount");
   const count_increment = parseInt(count) + 1;
@@ -37,6 +38,24 @@ server.get("/api/get", async (req, res) => {
 
   const response = {
     count: count_increment,
+    amount: amount,
+  };
+  res.json(response);
+});
+
+server.get("/api/check", async (req, res) => {
+  const count = await client.get("inventorycount");
+  const postgres_query = await pool.query(
+    "SELECT amount as AMOUNT FROM inventory where sku=1"
+  );
+
+  console.log("Inventory count", count);
+  console.log("postgres_query is...");
+  console.log(postgres_query);
+  const amount = postgres_query.rows[0].amount;
+
+  const response = {
+    count: count,
     amount: amount,
   };
   res.json(response);
