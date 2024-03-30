@@ -9,3 +9,10 @@ services:
     ports:
       - "8080:8080"     
     container_name: BACKEND_DNS_NAME
+  frontend_server:
+    build: 
+      context: ./frontend
+    ports:
+      - "3000:3000"     
+    container_name: FRONTEND_DNS_NAME
+    stdin_open: true
