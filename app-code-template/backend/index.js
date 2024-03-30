@@ -61,6 +61,23 @@ server.get("/api/check", async (req, res) => {
   res.json(response);
 });
 
+server.get("/api/sell", async (req, res) => {
+  const count = await client.get("inventorycount");
+  const count_decrement = parseInt(count) - 1;
+  const amount = count_decrement * 10;
+
+  await client.set("inventorycount", count_decrement);
+  await pool.query(`UPDATE inventory SET amount=${amount} WHERE sku=0001`);
+
+  console.log(`Items in inventory: ${count_decrement}`);
+  console.log(`Updating price in inventory to: \$${amount}`);
+
+  const response = {
+    count: count_decrement,
+    amount: amount,
+  };
+  res.json(response);
+});
 server.listen(8080, () => {
   console.log("Node server listening on port 8080");
 });

@@ -27,6 +27,17 @@ function App() {
     }
   };
 
+  const sellInventory = async () => {
+    try {
+      const response = await fetch("/api/sell");
+      const data = await response.json();
+      setCurrentInventory(data.count);
+      setCurrentAmount(data.amount);
+    } catch (error) {
+      console.error("Error fetching inventory:", error);
+    }
+  };
+
   return (
     <div className="App">
       <header>
@@ -61,7 +72,8 @@ function App() {
             <div className="col-md-3 col-sm-3">
               <button
                 type="button"
-                className="btn btn-secondary btn-lg disabled"
+                className="btn btn-secondary btn-lg"
+                onClick={sellInventory}
               >
                 Sell Items
               </button>
