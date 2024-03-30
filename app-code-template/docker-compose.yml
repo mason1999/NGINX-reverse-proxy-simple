@@ -1,10 +1,11 @@
 version: '3'
 services:
-  redis-server:
+  redis_db:
     image: 'redis'
-  node-app:
+    container_name: DATABASE_REDIS_DNS_NAME
+  backend_server:
     build: 
       context: ./backend
     ports:
       - "8080:8080"     
-    container_name: api-server  
+    container_name: BACKEND_DNS_NAME

@@ -4,7 +4,7 @@ import { createClient } from "redis";
 const server = express();
 
 const client = await createClient({
-  url: "redis://redis-server:6379",
+  url: "redis://DATABASE_REDIS_DNS_NAME:6379",
 })
   .on("error", (err) => console.log("Redis Client Error", err))
   .connect();
