@@ -1,5 +1,5 @@
-export async function getinventory() {
+export async function getInventory() {
   const response = await fetch("/api/get");
-
-  return await response.json();
+  const data = await response.json();
+  return data.current_inventory;
 }
