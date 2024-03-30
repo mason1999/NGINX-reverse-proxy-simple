@@ -1,14 +1,27 @@
 version: '3'
 services:
+
   redis_db:
     image: 'redis'
     container_name: DATABASE_REDIS_DNS_NAME
+
+  postgres_db:
+    image: postgres
+    container_name: DATABASE_POSTGRES_DNS_NAME
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./init-database.sql:/docker-entrypoint-initdb.d/init-database.sql
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+
   backend_server:
     build: 
       context: ./backend
     ports:
       - "8080:8080"     
     container_name: BACKEND_DNS_NAME
+
   frontend_server:
     build: 
       context: ./frontend
@@ -16,3 +29,6 @@ services:
       - "3000:3000"     
     container_name: FRONTEND_DNS_NAME
     stdin_open: true
+
+volumes:
+  postgres:

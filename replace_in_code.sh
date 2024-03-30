@@ -1,6 +1,7 @@
 #! /usr/bin/bash
 TFVARS_FILE="./infrastructure-code/terraform.tfvars"
 DATABASE_REDIS_VARIABLE="DATABASE_REDIS_DNS_NAME"
+DATABASE_POSTGRES_VARIABLE="DATABASE_POSTGRES_DNS_NAME"
 BACKEND_VARIABLE="BACKEND_DNS_NAME"
 FRONTEND_VARIABLE="FRONTEND_DNS_NAME"
 
@@ -10,6 +11,14 @@ database_redis_replace() {
     # Update here for more occurences of files where redis needs to be referenced.
     sed -i "s/${DATABASE_REDIS_VARIABLE}/$(echo ${database_redis_input_name})/g" "./app-code/backend/index.js"
     sed -i "s/${DATABASE_REDIS_VARIABLE}/$(echo ${database_redis_input_name})/g" "./app-code/docker-compose.yml" # TODO: delete this after testing because plan to use ACI
+}
+
+database_postgres_replace() {
+    database_postgres_input_name=$(cat "${TFVARS_FILE}" | grep "${DATABASE_POSTGRES_VARIABLE}" | grep -Eo '".*"' | grep -Eo '[^"]+')
+
+    # Update here for more occurences of files where postgres needs to be referenced.
+    sed -i "s/${DATABASE_POSTGRES_VARIABLE}/$(echo ${database_postgres_input_name})/g" "./app-code/backend/index.js"
+    sed -i "s/${DATABASE_POSTGRES_VARIABLE}/$(echo ${database_postgres_input_name})/g" "./app-code/docker-compose.yml" # TODO: delete this after testing because plan to use ACI
 }
 
 backend_replace() {
@@ -34,6 +43,7 @@ case $option in
     c)
     cp -r "app-code-template" "app-code"
     database_redis_replace
+    database_postgres_replace
     backend_replace
     frontend_replace
     ;;

@@ -3,12 +3,14 @@ import React, { useState } from "react";
 
 function App() {
   const [currentInventory, setCurrentInventory] = useState(0);
+  const [currentAmount, setCurrentAmount] = useState(0);
 
   const addInventory = async () => {
     try {
       const response = await fetch("/api/get");
       const data = await response.json();
-      setCurrentInventory(data.current_inventory);
+      setCurrentInventory(data.count);
+      setCurrentAmount(data.amount);
     } catch (error) {
       console.error("Error fetching inventory:", error);
     }
@@ -56,7 +58,10 @@ function App() {
 
           <div className="row well mb-3">
             <div className="col-md-6">
-              <h5>There are {currentInventory} items in Mason's inventory</h5>
+              <h5>
+                There are {currentInventory} items in Mason's inventory and they
+                cost ${currentAmount}.
+              </h5>
             </div>
           </div>
         </div>
