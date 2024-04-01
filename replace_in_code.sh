@@ -4,6 +4,7 @@ DATABASE_REDIS_VARIABLE="DATABASE_REDIS_DNS_NAME"
 DATABASE_POSTGRES_VARIABLE="DATABASE_POSTGRES_DNS_NAME"
 BACKEND_VARIABLE="BACKEND_DNS_NAME"
 FRONTEND_VARIABLE="FRONTEND_DNS_NAME"
+PROXY_VARIABLE="PROXY_DNS_NAME"
 
 database_redis_replace() {
     database_redis_input_name=$(cat "${TFVARS_FILE}" | grep "${DATABASE_REDIS_VARIABLE}" | grep -Eo '".*"' | grep -Eo '[^"]+')
@@ -27,6 +28,7 @@ backend_replace() {
     # Update here for more occurences of files where backend needs to be referenced.
     sed -i "s/${BACKEND_VARIABLE}/$(echo ${backend_input_name})/g" "./app-code/docker-compose.yml" # TODO: delete this after testing because plan to use ACI
     sed -i "s/${BACKEND_VARIABLE}/$(echo ${backend_input_name})/g" "./app-code/frontend/package.json"
+    sed -i "s/${BACKEND_VARIABLE}/$(echo ${backend_input_name})/g" "./app-code/proxy/default.conf"
 }
 
 frontend_replace() {
@@ -34,8 +36,15 @@ frontend_replace() {
 
     # Update here for more occurences of files where frontend needs to be referenced.
     sed -i "s/${FRONTEND_VARIABLE}/$(echo ${frontend_input_name})/g" "./app-code/docker-compose.yml" # TODO: delete this after testing because plan to use ACI
+    sed -i "s/${FRONTEND_VARIABLE}/$(echo ${frontend_input_name})/g" "./app-code/proxy/default.conf"
 }
 
+proxy_replace() {
+    proxy_input_name=$(cat "${TFVARS_FILE}" | grep "${PROXY_VARIABLE}" | grep -Eo '".*"' | grep -Eo '[^"]+')
+
+    # Update here for more occurences of files where proxy needs to be referenced.
+    sed -i "s/${PROXY_VARIABLE}/$(echo ${proxy_input_name})/g" "./app-code/docker-compose.yml" # TODO: delete this after testing because plan to use ACI
+}
 
 ########## BEGIN SCRIPT ##########
 getopts "cdh" option
@@ -46,6 +55,7 @@ case $option in
     database_postgres_replace
     backend_replace
     frontend_replace
+    proxy_replace
     ;;
 
     d)
