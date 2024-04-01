@@ -2,13 +2,19 @@ version: '3'
 services:
 
   redis_db:
-    image: 'redis'
+    build:
+      context: ./redis_db
+      dockerfile: Dockerfile
+    image: redis_image
     container_name: DATABASE_REDIS_DNS_NAME
     volumes:
       - redis_volume:/data
 
   postgres_db:
-    image: postgres
+    build:
+      context: ./postgres_db
+      dockerfile: Dockerfile
+    image: postgres_image
     container_name: DATABASE_POSTGRES_DNS_NAME
     volumes:
       - postgres_volume:/var/lib/postgresql/data
@@ -18,21 +24,25 @@ services:
       - POSTGRES_PASSWORD=password
 
   backend_server:
-    build: 
+    build:
       context: ./backend
+      dockerfile: Dockerfile
+    image: backend_image
+    container_name: BACKEND_DNS_NAME
     ports:
       - "8080:8080"     
-    container_name: BACKEND_DNS_NAME
     depends_on:
       - redis_db
       - postgres_db
 
   frontend_server:
-    build: 
+    build:
       context: ./frontend
+      dockerfile: Dockerfile
+    image: frontend_image
+    container_name: FRONTEND_DNS_NAME
     ports:
       - "3000:3000"     
-    container_name: FRONTEND_DNS_NAME
     stdin_open: true
     depends_on:
       - backend_server
@@ -40,9 +50,11 @@ services:
   nginx_web_server_proxy:
     build:
       context: ./proxy
+      dockerfile: Dockerfile
+    image: proxy_image
+    container_name: PROXY_DNS_NAME
     ports:
       - 8081:80
-    container_name: PROXY_DNS_NAME
     depends_on:
       - backend_server
       - frontend_server
