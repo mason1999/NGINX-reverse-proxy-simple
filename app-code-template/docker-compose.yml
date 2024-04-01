@@ -29,6 +29,7 @@ services:
       dockerfile: Dockerfile
     image: backend_image
     container_name: BACKEND_DNS_NAME
+    restart: on-failure
     ports:
       - "8080:8080"     
     depends_on:
