@@ -25,7 +25,7 @@ const pool = new pg.Pool({
 
 await client.set("inventorycount", 0);
 
-server.get("/api/get", async (req, res) => {
+server.get("/api/add", async (req, res) => {
   const count = await client.get("inventorycount");
   const count_increment = parseInt(count) + 1;
   const amount = count_increment * 10;

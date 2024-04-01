@@ -7,7 +7,7 @@ function App() {
 
   const addInventory = async () => {
     try {
-      const response = await fetch("/api/get");
+      const response = await fetch("/api/add");
       const data = await response.json();
       setCurrentInventory(data.count);
       setCurrentAmount(data.amount);
