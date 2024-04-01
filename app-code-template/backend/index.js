@@ -78,6 +78,13 @@ server.get("/api/sell", async (req, res) => {
   };
   res.json(response);
 });
+
+server.get("/intentional/bug", async (req, res) => {
+  process.nextTick(() => {
+    throw new Error();
+  });
+});
+
 server.listen(8080, () => {
   console.log("Node server listening on port 8080");
 });
