@@ -48,18 +48,6 @@ services:
     depends_on:
       - backend_server
     
-  nginx_web_server_proxy:
-    build:
-      context: ./proxy
-      dockerfile: Dockerfile
-    image: proxy_image
-    container_name: PROXY_DNS_NAME
-    ports:
-      - 8081:80
-    depends_on:
-      - backend_server
-      - frontend_server
-
 volumes:
   postgres_volume:
   redis_volume:
