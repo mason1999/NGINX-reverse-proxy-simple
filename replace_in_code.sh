@@ -27,7 +27,7 @@ backend_replace() {
     # Update here for more occurences of files where backend needs to be referenced.
     sed -i "s/${BACKEND_VARIABLE}/$(echo ${backend_input_name})/g" "./app-code/docker-compose.yml" # TODO: delete this after testing because plan to use ACI
     sed -i "s/${BACKEND_VARIABLE}/$(echo ${backend_input_name})/g" "./app-code/frontend/package.json"
-    sed -i "s/${BACKEND_VARIABLE}/$(echo ${backend_input_name})/g" "./app-code/proxy/default.conf"
+    sed -i "s/${BACKEND_VARIABLE}/$(echo ${backend_input_name})/g" "./app-code/frontend/nginx.conf"
 }
 
 frontend_replace() {
@@ -35,7 +35,6 @@ frontend_replace() {
 
     # Update here for more occurences of files where frontend needs to be referenced.
     sed -i "s/${FRONTEND_VARIABLE}/$(echo ${frontend_input_name})/g" "./app-code/docker-compose.yml" # TODO: delete this after testing because plan to use ACI
-    sed -i "s/${FRONTEND_VARIABLE}/$(echo ${frontend_input_name})/g" "./app-code/proxy/default.conf"
 }
 
 ########## BEGIN SCRIPT ##########

@@ -30,8 +30,6 @@ services:
     image: backend_image
     container_name: BACKEND_DNS_NAME
     restart: on-failure
-    ports:
-      - "8080:8080"     
     depends_on:
       - redis_db
       - postgres_db
@@ -43,7 +41,7 @@ services:
     image: frontend_image
     container_name: FRONTEND_DNS_NAME
     ports:
-      - "3000:3000"     
+      - "80:80"     
     stdin_open: true
     depends_on:
       - backend_server
